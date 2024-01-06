@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Currency Convertor</h1>
+	<hr>
+	<div class="content">
+		<form action="/" method="post">
+
+      <p>What is the currency you are starting with?</p>
+      <p><label>
+          <input name="FromCurrency" type="radio" required value="USD">US Dollars
+        </label></p>
+      <p><label>
+          <input name="FromCurrency" type="radio" required value="MXN">Peso
+        </label></p>
+      <p><label>
+          <input name="FromCurrency" type="radio" required value="JPY">Yen
+        </label></p>
+      <p><label>
+          <input name="FromCurrency" type="radio" required value="INR">Rupee
+        </label></p>
+      <p><label>
+          <input name="FromCurrency" type="radio" required value="GBP">British Pound
+        </label></p>
+			<p>
+				<label>What is the amount you would like to convert:
+				  <input type="number" name="amount" placeholder="$5.00" required>
+        </label>
+			</p>
+
+			<div>
+        <p>What kind of Currency would you like to convert to:</p>
+				  
+        <p><label>
+          <input name="ToCurrency" required type="radio" value="MXN">
+          Peso</label></p>
+        
+        <p><label>
+            <input name="ToCurrency" required type="radio" value="USD">
+            US Dollar</label></p>
+
+        <p><label>
+          <input name="ToCurrency" required type="radio" value="JPY">
+          Yen</label></p>
+				
+        <p><label>
+          <input name="ToCurrency" required type="radio" value="GBP">
+          British Pound</label></p>
+				
+        <p><label>
+          <input name="ToCurrency" required type="radio" value="INR">
+          Indian Rupee</label></p>
+        </div>
+
+			<p><button type="submit">Submit</button></p>
+      {% if amount is defined and fromCurrency is defined and toCurrency is defined and newAmount is defined %}
+            <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p>
+      {% endif %}
+
+		</form>
+    <!-- <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p> -->
+        <hr>
+        {% for i in conversions %}
+	    <div class="todo">
+            <p class="{{ i.ToCurrency }}">{{ i.amount }} <em>({{ i.ToCurrency }})</em></p>
+            <form method="POST" action="/delete/{{i._id}}">
+                <input type="hidden" name="_method" value="DELETE">
+                <input 
+                    type="submit" 
+                    value="Delete Tracked Conversion" 
+                    onclick="return confirm('Are you sure you want to delete this entry?')">
+            </form>
+            
+	    </div>
+{% endfor %}
+	</div>
+</body>
+</html>
