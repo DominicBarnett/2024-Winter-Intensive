@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ConvertTrack</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -59,16 +59,17 @@
         </div>
 
 			<p><button type="submit">Submit</button></p>
-      {% if amount is defined and fromCurrency is defined and toCurrency is defined and newAmount is defined %}
-            <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p>
-      {% endif %}
+      
 
 		</form>
+    {% if request.method == 'POST' %}
+            <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p>
+      {% endif %}
     <!-- <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p> -->
         <hr>
         {% for i in conversions %}
 	    <div class="todo">
-            <p class="{{ i.ToCurrency }}">{{ i.amount }} <em>({{ i.ToCurrency }})</em></p>
+            <p class="{{ i.previousConversions }}">{{ i.amount }} <em>({{ i.ToCurrency }})</em></p>
             <form method="POST" action="/delete/{{i._id}}">
                 <input type="hidden" name="_method" value="DELETE">
                 <input 

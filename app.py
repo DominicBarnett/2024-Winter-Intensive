@@ -23,21 +23,45 @@ except Exception as e:
 
 
 @app.route('/', methods=('GET', 'POST'))
+# def index():
+
+#     if request.method == 'POST':
+#         FromCurrency = request.form['FromCurrency']
+#         amount = request.form['amount']
+#         ToCurrency = request.form['ToCurrency']
+#         db.StoredConversions.insert_one({'FromCurrency': FromCurrency, 'amount': amount, 'ToCurrency': ToCurrency})
+
+#         context = api_call()
+
+#         return redirect(url_for('index')), context
+
+#     all_conversions = db.StoredConversions.find()
+    
+#     return render_template('index.html', conversions=all_conversions, **context)
 def index():
     context = {}
-
-    if request.method == 'POST':
+    if request.method=='POST':
         FromCurrency = request.form['FromCurrency']
         amount = request.form['amount']
         ToCurrency = request.form['ToCurrency']
         db.StoredConversions.insert_one({'FromCurrency': FromCurrency, 'amount': amount, 'ToCurrency': ToCurrency})
 
         params = {
-            'from': FromCurrency,
-            'to': ToCurrency,
+            'from' : FromCurrency,
+            'to' : ToCurrency,
             'amount': amount,
             'api_key': API_KEY
         }
+    #     results_json = requests.get(API_URL, params=params).json()
+    #     # print(results_json)
+    #     context = {
+    #     'amount' : results_json['response']['amount'],
+    #     'fromCurrency' : results_json['response']['from'],
+    #     'toCurrency' : results_json['response']['to'],
+    #     'newAmount' : results_json['response']['value']
+
+    #     }
+    #     return redirect(url_for('index')), results_json, context
         try:
             results_json = requests.get(API_URL, params=params).json()
             if results_json.get('success', False):
@@ -50,36 +74,23 @@ def index():
         except Exception as e:
             print(f"Error in API request: {e}")
 
-        # Separate the redirect from the return statement
-        return redirect(url_for('index'))
+        # return redirect(url_for('index')), context
 
-    all_conversions = db.StoredConversions.find()
+    all_conversions = db.StoredConversions.find() # Add this line outside the if block! 
     return render_template('index.html', conversions=all_conversions, **context)
-# def index():
-#     context = {}
-#     if request.method=='POST':
-#         FromCurrency = request.form['FromCurrency']
-#         amount = request.form['amount']
-#         ToCurrency = request.form['ToCurrency']
-#         db.StoredConversions.insert_one({'FromCurrency': FromCurrency, 'amount': amount, 'ToCurrency': ToCurrency})
 
-#         params = {
-#             'from' : FromCurrency,
-#             'to' : ToCurrency,
+# def api_call():
+#     FromCurrency = request.form['FromCurrency']
+#     amount = request.form['amount']
+#     ToCurrency = request.form['ToCurrency']
+
+#     params = {
+#             'from': FromCurrency,
+#             'to': ToCurrency,
 #             'amount': amount,
 #             'api_key': API_KEY
 #         }
-#     #     results_json = requests.get(API_URL, params=params).json()
-#     #     # print(results_json)
-#     #     context = {
-#     #     'amount' : results_json['response']['amount'],
-#     #     'fromCurrency' : results_json['response']['from'],
-#     #     'toCurrency' : results_json['response']['to'],
-#     #     'newAmount' : results_json['response']['value']
-
-#     #     }
-#     #     return redirect(url_for('index')), results_json, context
-#         try:
+#     try:
 #             results_json = requests.get(API_URL, params=params).json()
 #             if results_json.get('success', False):
 #                 context = {
@@ -88,13 +99,10 @@ def index():
 #                     'toCurrency': results_json['response']['to'],
 #                     'newAmount': results_json['response']['value']
 #                 }
-#         except Exception as e:
+#     except Exception as e:
 #             print(f"Error in API request: {e}")
-
-#         return redirect(url_for('index')), context
-
-#     all_conversions = db.StoredConversions.find() # Add this line outside the if block! 
-#     return render_template('index.html', conversions=all_conversions, **context)
+    
+#     return context
         
 
 @app.route('/delete/<id>', methods=["POST"])
