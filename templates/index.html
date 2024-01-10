@@ -13,7 +13,7 @@
 		<form action="/" method="post" id="ConversionForm">
 
       <p>What is the currency you are starting with?</p>
-      <p><label>
+      <!-- <p><label>
           <input name="FromCurrency" type="radio" required value="USD">US Dollars
         </label></p>
       <p><label>
@@ -27,7 +27,12 @@
         </label></p>
       <p><label>
           <input name="FromCurrency" type="radio" required value="GBP">British Pound
-        </label></p>
+        </label></p> -->
+        <select name="FromCurrency">
+          {% for name, short_code in currencyDict %}
+            <option value="{{ short_code }}">{{ name }}</option>
+          {% endfor %}
+        </select>
 			<p>
 				<label>What is the amount you would like to convert:
 				  <input type="number" name="amount" placeholder="$5.00" required>

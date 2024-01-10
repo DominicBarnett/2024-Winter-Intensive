@@ -34,6 +34,8 @@ for entry in currency_results_json['response']:
         short_code = entry['short_code']
         currency_dict[name] = short_code
 
+# print(currency_dict)
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     context = {}
@@ -56,7 +58,7 @@ def index():
                 'fromCurrency' : results_json['response']['from'],
                 'toCurrency' : results_json['response']['to'],
                 'newAmount' : round(results_json['response']['value'], 2),
-                'currencyDict' : currency_dict
+                'currencyDict' : currency_dict.items()
 
                 }
         newAmount = round(results_json['response']['value'], 2)
