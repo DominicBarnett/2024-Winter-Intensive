@@ -29,3 +29,9 @@ input[type=text] {
 .previousConversions{
 	color: gray;
 }
+.resultMessage{
+	border: 2px black solid;
+	background-color: lightgray;
+	margin: 0.5em;
+	padding: .5em;
+}

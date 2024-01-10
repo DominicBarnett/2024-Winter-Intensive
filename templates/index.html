@@ -63,7 +63,7 @@
 
 		</form>
     {% if request.method == 'POST' %}
-            <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p>
+            <p class="resultMessage">You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p>
       {% endif %}
     <!-- <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p> -->
         <hr>
