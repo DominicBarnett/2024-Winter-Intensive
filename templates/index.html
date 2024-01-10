@@ -10,7 +10,7 @@
     <h1>Currency Convertor</h1>
 	<hr>
 	<div class="content">
-		<form action="/" method="post">
+		<form action="/" method="post" id="ConversionForm">
 
       <p>What is the currency you are starting with?</p>
       <p><label>
@@ -69,7 +69,7 @@
         <hr>
         {% for i in conversions %}
 	    <div class="todo">
-            <p class="{{ i.previousConversions }}">{{ i.amount }} <em>({{ i.ToCurrency }})</em></p>
+            <p class="{{ i.previousConversions }}">You converted {{ i.amount }} {{i.FromCurrency}} to {{ i.ToCurrency }} resulting in {{i.NewAmount}} {{i.ToCurrency}}</p>
             <form method="POST" action="/delete/{{i._id}}">
                 <input type="hidden" name="_method" value="DELETE">
                 <input 

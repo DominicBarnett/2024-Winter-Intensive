@@ -17,6 +17,10 @@ button, input[type=submit] {
 	color: #fff;
 	font-size: 1rem;
 }
+#ConversionForm{
+	padding: .5em;
+	margin: .5em;
+}
 
 input[type=text] {
 	padding: 0.5rem;
