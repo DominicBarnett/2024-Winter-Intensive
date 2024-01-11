@@ -13,15 +13,7 @@ app = Flask(__name__)
 uri = 'mongodb+srv://dombarnett03:3SYrz9JsbamU6txd@cluster0.zvgijzx.mongodb.net/?retryWrites=true&w=majority'
 client = MongoClient(uri)
 db = client.CurrencyConversions
-
-# currency_dict = {}
-# currency_params = {
-#         'type' : 'fiat',
-#         'api_key' : API_KEY
-#     }
-
-
-# currency_results_json = requests.get(CURRENCY_API_URL, params=currency_params).json()
+Eggs = 2.78
 
 try:
     client.admin.command('ping')
@@ -51,6 +43,23 @@ def get_currency_dict():
         currency_dict[name] = short_code
     return currency_dict
 
+def egg_price_conversion():
+    ToCurrency = request.form['ToCurrency']
+    Eggs = 2.78
+
+    params = {
+            'from' : 'USD',
+            'to' : ToCurrency,
+            'amount': Eggs,
+            'api_key': API_KEY
+        }
+    
+    egg_conversion_json = requests.get(API_URL, params=params).json()
+    Eggs = round(egg_conversion_json['response']['value'], 2)
+    print(Eggs)
+
+    return Eggs
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     context = {}
@@ -59,6 +68,9 @@ def index():
         FromCurrency = request.form['FromCurrency']
         amount = request.form['amount']
         ToCurrency = request.form['ToCurrency']
+        if ToCurrency != 'USD':
+            egg_price_conversion()
+            print(Eggs)
         
         params = {
             'from' : FromCurrency,
@@ -73,6 +85,7 @@ def index():
                 'fromCurrency' : results_json['response']['from'],
                 'toCurrency' : results_json['response']['to'],
                 'newAmount' : round(results_json['response']['value'], 2),
+                'QuantityOfEggs' : round(round(results_json['response']['value'], 2)/Eggs)
                 }
         newAmount = round(results_json['response']['value'], 2)
         db.StoredConversions.insert_one({'FromCurrency': FromCurrency, 'amount': amount, 'ToCurrency': ToCurrency, 'NewAmount': newAmount})

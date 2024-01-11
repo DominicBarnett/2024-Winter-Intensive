@@ -39,8 +39,9 @@
 		</form>
     {% if request.method == 'POST' %}
             <p class="resultMessage">You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p>
+            <p class="resultMessage">With {{ newAmount }} {{ toCurrency }} you could buy approximately {{ QuantityOfEggs }} dozen eggs </p>
       {% endif %}
-    <!-- <p>You converted {{ amount }} {{ fromCurrency }} to {{ toCurrency }} resulting in: {{ newAmount }} {{ toCurrency }}</p> -->
+
         <hr>
         {% for i in conversions %}
 	    <div class="todo">
