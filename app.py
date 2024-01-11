@@ -13,14 +13,15 @@ app = Flask(__name__)
 uri = 'mongodb+srv://dombarnett03:3SYrz9JsbamU6txd@cluster0.zvgijzx.mongodb.net/?retryWrites=true&w=majority'
 client = MongoClient(uri)
 db = client.CurrencyConversions
-currency_dict = {}
-currency_params = {
-        'type' : 'fiat',
-        'api_key' : API_KEY
-    }
+
+# currency_dict = {}
+# currency_params = {
+#         'type' : 'fiat',
+#         'api_key' : API_KEY
+#     }
 
 
-currency_results_json = requests.get(CURRENCY_API_URL, params=currency_params).json()
+# currency_results_json = requests.get(CURRENCY_API_URL, params=currency_params).json()
 
 try:
     client.admin.command('ping')
@@ -29,12 +30,26 @@ try:
 except Exception as e:
     print(e)
 
-for entry in currency_results_json['response']:
+# for entry in currency_results_json['response']:
+#         name = entry['name']
+#         short_code = entry['short_code']
+#         currency_dict[name] = short_code
+
+# print(currency_dict)
+    
+def get_currency_dict():
+    '''Creates API call to generate all available currency's to use'''
+    currency_dict = {}
+    currency_params = {
+        'type' : 'fiat',
+        'api_key' : API_KEY
+    }
+    currency_results_json = requests.get(CURRENCY_API_URL, params=currency_params).json()
+    for entry in currency_results_json['response']:
         name = entry['name']
         short_code = entry['short_code']
         currency_dict[name] = short_code
-
-# print(currency_dict)
+    return currency_dict
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
@@ -58,23 +73,20 @@ def index():
                 'fromCurrency' : results_json['response']['from'],
                 'toCurrency' : results_json['response']['to'],
                 'newAmount' : round(results_json['response']['value'], 2),
-                'currencyDict' : currency_dict.items()
-
                 }
         newAmount = round(results_json['response']['value'], 2)
         db.StoredConversions.insert_one({'FromCurrency': FromCurrency, 'amount': amount, 'ToCurrency': ToCurrency, 'NewAmount': newAmount})
 
-
-
-
     all_conversions = db.StoredConversions.find() 
-    return render_template('index.html', conversions=all_conversions, **context)
+    return render_template('index.html',currency_dict=get_currency_dict(), conversions=all_conversions, **context)
 
 
 @app.route('/delete/<id>', methods=["POST"])
 def delete(id):
     db.StoredConversions.delete_one({"_id": ObjectId(id)})
     return redirect(url_for('index'))
+
+
 
 
 if __name__ == '__main__':

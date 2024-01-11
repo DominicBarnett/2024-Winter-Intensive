@@ -13,23 +13,8 @@
 		<form action="/" method="post" id="ConversionForm">
 
       <p>What is the currency you are starting with?</p>
-      <!-- <p><label>
-          <input name="FromCurrency" type="radio" required value="USD">US Dollars
-        </label></p>
-      <p><label>
-          <input name="FromCurrency" type="radio" required value="MXN">Peso
-        </label></p>
-      <p><label>
-          <input name="FromCurrency" type="radio" required value="JPY">Yen
-        </label></p>
-      <p><label>
-          <input name="FromCurrency" type="radio" required value="INR">Rupee
-        </label></p>
-      <p><label>
-          <input name="FromCurrency" type="radio" required value="GBP">British Pound
-        </label></p> -->
         <select name="FromCurrency">
-          {% for name, short_code in currencyDict %}
+           {% for name, short_code in currency_dict.items() %}
             <option value="{{ short_code }}">{{ name }}</option>
           {% endfor %}
         </select>
@@ -41,26 +26,11 @@
 
 			<div>
         <p>What kind of Currency would you like to convert to:</p>
-				  
-        <p><label>
-          <input name="ToCurrency" required type="radio" value="MXN">
-          Peso</label></p>
-        
-        <p><label>
-            <input name="ToCurrency" required type="radio" value="USD">
-            US Dollar</label></p>
-
-        <p><label>
-          <input name="ToCurrency" required type="radio" value="JPY">
-          Yen</label></p>
-				
-        <p><label>
-          <input name="ToCurrency" required type="radio" value="GBP">
-          British Pound</label></p>
-				
-        <p><label>
-          <input name="ToCurrency" required type="radio" value="INR">
-          Indian Rupee</label></p>
+        <select name="ToCurrency">
+          {% for name, short_code in currency_dict.items() %}
+           <option value="{{ short_code }}">{{ name }}</option>
+         {% endfor %}
+       </select>
         </div>
 
 			<p><button type="submit">Submit</button></p>
