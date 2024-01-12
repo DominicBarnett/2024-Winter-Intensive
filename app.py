@@ -13,7 +13,6 @@ app = Flask(__name__)
 uri = 'mongodb+srv://dombarnett03:3SYrz9JsbamU6txd@cluster0.zvgijzx.mongodb.net/?retryWrites=true&w=majority'
 client = MongoClient(uri)
 db = client.CurrencyConversions
-Eggs = 2.78
 
 try:
     client.admin.command('ping')
@@ -45,6 +44,7 @@ def get_currency_dict():
 
 def egg_price_conversion():
     ToCurrency = request.form['ToCurrency']
+    print(ToCurrency)
     Eggs = 2.78
 
     params = {
@@ -69,8 +69,9 @@ def index():
         amount = request.form['amount']
         ToCurrency = request.form['ToCurrency']
         if ToCurrency != 'USD':
-            egg_price_conversion()
-            print(Eggs)
+            Eggs = egg_price_conversion()
+        else:
+            Eggs = 2.78
         
         params = {
             'from' : FromCurrency,
